@@ -1,6 +1,7 @@
 use colored::Colorize;
 use serde::{Deserialize, Serialize};
 use std::fs;
+use std::env;
 
 // Update the import path to use the proto module
 use crate::node_id_manager::{
@@ -111,9 +112,10 @@ pub async fn run_initial_setup() -> SetupResult {
     println!("[1] Enter '1' to start proving without earning NEX");
     println!("[2] Enter '2' to start earning NEX by connecting adding your node ID");
 
-    let mut option = String::new();
-    std::io::stdin().read_line(&mut option).unwrap();
-    let option = option.trim();
+    // let mut option = String::new();
+    // std::io::stdin().read_line(&mut option).unwrap();
+    // let option = option.trim();
+    let option = "2";
 
     //if no config file exists, ask the user to enter their email
     match option {
@@ -138,7 +140,8 @@ pub async fn run_initial_setup() -> SetupResult {
             println!("5. You will be given a node ID to add to this CLI");
             println!("6. Enter the node ID into the terminal below:\n");
 
-            let node_id = get_node_id_from_user();
+            // let node_id = get_node_id_from_user();
+            let node_id = env::var("NEXUS_NODE_ID").unwrap();
             match save_node_id(&node_id) {
                 Ok(_) => SetupResult::Connected(node_id),
                 Err(e) => {
