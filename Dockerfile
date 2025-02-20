@@ -1,5 +1,3 @@
-ARG version=0.4.8
-
 FROM rust:latest AS build
 ARG version
 WORKDIR /root
@@ -12,7 +10,7 @@ WORKDIR /root/clients/cli
 RUN cargo build --release
 RUN mkdir -p /root/.nexus
 RUN rustup target add riscv32i-unknown-none-elf
-ENTRYPOINT [ "/root/clients/cli/target/release/nexus-network", "--start", "--beta" ]
+ENTRYPOINT [ "/root/clients/cli/target/release/nexus-network", "start", "--env", "beta" ]
 
 # FROM debian:12-slim
 # ARG version
