@@ -87,13 +87,13 @@ pub async fn run_initial_setup() -> SetupResult {
         );
 
         //ask the user if they want to use the existing config
-        println!("Do you want to use the existing user account? (y/n)");
+        println!("Do you want to use the existing user account? [Y/n]");
         let mut use_existing_config = String::new();
         std::io::stdin()
             .read_line(&mut use_existing_config)
             .unwrap();
         let use_existing_config = use_existing_config.trim();
-        if use_existing_config == "y" {
+        if use_existing_config != "n" {
             match fs::read_to_string(&node_id_path) {
                 Ok(content) => {
                     return SetupResult::Connected(content.trim().to_string());
@@ -109,8 +109,8 @@ pub async fn run_initial_setup() -> SetupResult {
     }
 
     println!("\nThis node is not connected to any account.\n");
-    println!("[1] Enter '1' to start proving without earning NEX");
-    println!("[2] Enter '2' to start earning NEX by connecting adding your node ID");
+    println!("[1] Enter '1' Anonymous mode: start proving without earning Devnet points");
+    println!("[2] Enter '2' Authenticated mode: start proving and earning Devnet points");
 
     // let mut option = String::new();
     // std::io::stdin().read_line(&mut option).unwrap();
@@ -131,7 +131,7 @@ pub async fn run_initial_setup() -> SetupResult {
                     .underline()
                     .bright_cyan()
             );
-            println!("You chose to start earning NEX by connecting your node ID\n");
+            println!("You chose to start earning Devnet points by connecting your node ID\n");
             println!("If you don't have a node ID, you can get it by following these steps:\n");
             println!("1. Go to https://app.nexus.xyz/nodes");
             println!("2. Sign in");
