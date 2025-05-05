@@ -18,7 +18,7 @@ impl OrchestratorClient {
     pub fn new(environment: config::Environment) -> Self {
         Self {
             client: ClientBuilder::new()
-                .timeout(Duration::from_millis(1000))
+                .timeout(Duration::from_secs(10))
                 .build()
                 .expect("Failed to create HTTP client"),
             base_url: environment.orchestrator_url(),
@@ -37,7 +37,7 @@ impl OrchestratorClient {
         U: Message + Default,
     {
         let request_bytes = request_data.encode_to_vec();
-        let url = format!("{}/v2{}", self.base_url, url);
+        let url = format!("{}/v3{}", self.base_url, url);
 
         let friendly_connection_error =
             "[CONNECTION] Unable to reach server. The service might be temporarily unavailable."
@@ -121,7 +121,7 @@ impl OrchestratorClient {
 
     pub async fn submit_proof(
         &self,
-        node_id: &str,
+        task_id: &str,
         proof_hash: &str,
         proof: Vec<u8>,
     ) -> Result<(), Box<dyn std::error::Error>> {
@@ -129,7 +129,7 @@ impl OrchestratorClient {
         let flops = measure_flops();
 
         let request = SubmitProofRequest {
-            node_id: node_id.to_string(),
+            task_id: task_id.to_string(),
             node_type: NodeType::CliProver as i32,
             proof_hash: proof_hash.to_string(),
             proof,

@@ -1,4 +1,9 @@
-# Nexus Network CLI
+[![Release](https://img.shields.io/github/v/release/nexus-xyz/nexus-cli.svg)](https://github.com/nexus-xyz/nexus-cli/releases)
+[![CI](https://github.com/nexus-xyz/nexus-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/nexus-xyz/nexus-cli/actions)
+[![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://github.com/nexus-xyz/nexus-cli/blob/main/LICENSE-APACHE)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/nexus-xyz/nexus-cli/blob/main/LICENSE-MIT)
+
+# Nexus CLI
 
 A high-performance command-line interface for contributing proofs to the Nexus network.
 
@@ -12,12 +17,12 @@ A high-performance command-line interface for contributing proofs to the Nexus n
     </figcaption>
 </figure>
 
-## The Nexus Network
+## Nexus Network
 
-The [Nexus Network](https://docs.nexus.xyz/network) is a global distributed prover network that unites the world's computers to power a new and better Internet: the Verifiable Internet.
+[Nexus](https://nexus.xyz/) is a global distributed prover network that unites the world's computers to power a new and better Internet: the Verifiable Internet.
 
-There have been two testnets so far:
-- Testnet 0: [October 08 – 28, 2024](https://blog.nexus.xyz/nexus-launches-worlds-first-open-prover-network/)
+There have been several testnets so far:
+- Testnet 0: [October 8 – 28, 2024](https://blog.nexus.xyz/nexus-launches-worlds-first-open-prover-network/)
 - Testnet I: [December 9 – 13, 2024](https://blog.nexus.xyz/the-new-nexus-testnet-is-live/)
 - Testnet II: [February 18 – 22, 2025](https://blog.nexus.xyz/testnet-ii-is-open/)
 
@@ -43,7 +48,7 @@ Alternatively, if you’ve already downloaded `install.sh`:
 
 ### CI
 
-The `install.sh` script is designed to do few things:
+The `install.sh` script is designed to do several things:
 
 
 1. Install Rust if it's not already installed... and do it non-interactively if possible, so it does not bother the user.
@@ -53,7 +58,7 @@ The `install.sh` script is designed to do few things:
 # this is the part in the install.sh script has the brittle `< /dev/tty` part within CI environments
 (
   cd "$REPO_PATH/clients/cli" || exit
-  cargo run --release -- --start --beta
+  cargo run --release -- start --env beta
 ) < /dev/tty
 ```
 
@@ -63,10 +68,10 @@ This combination of bash and Rust is a bit brittle in CI environments. Consider 
 
 1. **Build from source**:
    ```bash
-   git clone https://github.com/nexus-xyz/network-api
-   cd network-api/clients/cli
+   git clone https://github.com/nexus-xyz/nexus-cli
+   cd nexus-cli/clients/cli
    cargo build --release
-   ./target/release/nexus-network --start --beta
+   ./target/release/nexus-network start --env beta
    ```
 2. **Download the script locally** (and optionally set `NONINTERACTIVE=1` if you need it to run without prompts):
    ```bash
@@ -103,7 +108,7 @@ If you don’t have Rust installed, you will be prompted to install it (unless `
 
 ```bash
 sudo apt update && sudo apt upgrade
-sudo apt install build-essential pkg-config libssl-dev git-all protobuf-compiler
+sudo apt install build-essential pkg-config libssl-dev git-all
 ```
 
 ### macOS
@@ -127,21 +132,28 @@ Use of the CLI is subject to the [Terms of Use](https://nexus.xyz/terms-of-use).
 NONINTERACTIVE=1 sh install.sh
 ```
 
-or set `NONINTERACTIVE=1` before invoking the script.
+or `export NONINTERACTIVE=1` before invoking the curl installer.
 
 ---
 
 ## Node ID
 
-During the CLI’s startup, you’ll be asked for your node ID (used on Testnet or Devnet).  
-- To skip prompts in a non-interactive environment (`NONINTERACTIVE=1`), manually place your node ID in `~/.nexus/node-id`.
+During the CLI’s startup, you’ll be asked for your node ID. To skip prompts in a
+non-interactive environment, manually create a `~/.nexus/config.json` in the
+following format:
+
+```json
+{
+   "node_id": "<YOUR NODE ID>"
+}
+```
 
 ---
 
 ## Current Limitations
 
 - Only the latest CLI version is supported.
-- No prebuilt binaries yet.
+- Prebuilt binaries are not yet available.
 - To submit programs to the network for proving, contact [growth@nexus.xyz](mailto:growth@nexus.xyz).
 
 ---
@@ -150,14 +162,14 @@ During the CLI’s startup, you’ll be asked for your node ID (used on Testnet 
 
 - [Network FAQ](https://docs.nexus.xyz/layer-1/network-devnet/faq)  
 - [Discord Community](https://discord.gg/nexus-xyz)  
-- Technical issues? [Open an issue](https://github.com/nexus-xyz/network-api/issues)
+- Technical issues? [Open an issue](https://github.com/nexus-xyz/nexus-cli/issues)
 
 ---
 
 ## Repository Structure
 
 ```txt
-network-api/
+nexus-cli/
 ├── assets/       # Media for documentation
 ├── clients/
 │   └── cli/      # Main CLI implementation

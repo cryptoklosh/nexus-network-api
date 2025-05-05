@@ -30,11 +30,11 @@ fi
 
 # -----------------------------------------------------------------------------
 # 4) Prompt the user to agree to the Nexus Beta Terms of Use if we're in an
-#    interactive mode (i.e., NONINTERACTIVE is not set) and no node-id file exists.
+#    interactive mode (i.e., NONINTERACTIVE is not set) and no config.json file exists.
 #    We explicitly read from /dev/tty to ensure user input is requested from the
 #    terminal rather than the script's standard input.
 # -----------------------------------------------------------------------------
-while [ -z "$NONINTERACTIVE" ] && [ ! -f "$NEXUS_HOME/node-id" ]; do
+while [ -z "$NONINTERACTIVE" ] && [ ! -f "$NEXUS_HOME/config.json" ]; do
     read -p "Do you agree to the Nexus Beta Terms of Use (https://nexus.xyz/terms-of-use)? (Y/n) " yn </dev/tty
     echo ""
     
@@ -65,20 +65,21 @@ if [ "$GIT_IS_AVAILABLE" != 0 ]; then
 fi
 
 # -----------------------------------------------------------------------------
-# 6) Clone or update the network-api repository in $NEXUS_HOME.
+# 6) Clone or update the nexus-cli repository in $NEXUS_HOME.
 # -----------------------------------------------------------------------------
-REPO_PATH="$NEXUS_HOME/network-api"
+REPO_PATH="$NEXUS_HOME/nexus-cli"
 if [ -d "$REPO_PATH" ]; then
   echo "$REPO_PATH exists. Updating."
   (
     cd "$REPO_PATH" || exit
     git stash
+    git pull --rebase
     git fetch --tags
   )
 else
   (
     cd "$NEXUS_HOME" || exit
-    git clone https://github.com/nexus-xyz/network-api
+    git clone https://github.com/nexus-xyz/nexus-cli
   )
 fi
 
@@ -104,6 +105,5 @@ fi
 # and uncomment the line below.
 #
 # echo "Current location: $(pwd)"
-# (cd clients/cli &&   cargo run -r -- start --env beta
-# )
+# (cd clients/cli &&   cargo run -r -- start --env beta)
 # -----------------------------------------------------------------------------
